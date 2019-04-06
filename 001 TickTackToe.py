@@ -1,4 +1,12 @@
 class ttt:
+    """
+tic tac toe class
+
+Get current player with ttt.cp
+Print board with str(ttt)
+Play with turn method
+Check for winning or game end with the respective methods
+"""
     p = ["o", "x"]
     e = " "
     win  = [[(i,j) for i in range(3)] for j in range(3)]
@@ -8,31 +16,48 @@ class ttt:
 
        
     def __init__(self):
+        """ Initializes self
+            creates empty self.board
+            creates self.player generator""" 
         self.clearBoard()
         self.player = self.gen_player()
+        self.cp = next(self.player)
 
     def clearBoard(self):
+        """ initiates board with empty (self.e) symbols
+            indexing: (row, column), origin top left (0,0)"""
         self.board = {(i,j) : self.e for i in range(3) for j in range(3)}
 
     def gen_player(self):
+        """ player generator function
+            yields alternating players"""
         while True:
             yield self.p[0]
             yield self.p[1]
 
-    def checkWon(self, cp):
+    def checkWon(self):
+        """ checks if current player has won the game (True/False)
+            returns boolean"""
         won = False
         for w in self.win:
-            won = won or 3 == [self.board[ind] for ind in w].count(cp)
+            won = won or 3 == [self.board[ind] for ind in w].count(self.cp)
         return won
 
     def checkEnd(self):
+        """ checks if game ended in remis (True/False)
+            returns boolean"""
         return list(self.board.values()).count(self.e) == 0 
 
-    def turn(self, cp, ind):
+    def turn(self, ind):
+        """ current player sets mark at given position ind
+            returns AssertionError for invalid position"""
+        assert ind in self.board, "Invalid index"
         assert self.board[ind] == self.e, "Position already taken"
-        self.board[ind] = cp
+        self.board[ind] = self.cp
+        self.cp = next(self.player)
 
     def __str__(self):
+        """ returns string presentation of board"""
         return (f"\n"+5*"-"+f"\n").join("|".join(self.board[j,i] for i in range(3))
                            for j in range(3))
         
@@ -43,7 +68,7 @@ def game():
     print(str(t))
     while gameOn:
         gameEnd = False
-        cp = next(t.player)
+        cp = t.cp
         going = True
         while going:
             try:
