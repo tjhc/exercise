@@ -62,6 +62,8 @@ Check for winning or game end with the respective methods
                            for j in range(3))
         
 def game():
+    """ play tic tac toe in console
+    input using numpad"""
     t = ttt()
     numBlock = { str(k+1): (2-k//3,k%3) for k in range(9)} 
     gameOn = True
@@ -88,7 +90,7 @@ def game():
             except AssertionError as e:
                 print(e)
 
-        if gameEnd: 
+        if gameEnd:
             going = True
             while going:
                 try:
